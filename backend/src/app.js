@@ -1,11 +1,25 @@
 "use strict";
 
 const express = require("express");
+const mongoose = require("mongoose");
 
 const app = express();
 
+// conect database
+async function connectDatabase() {
+  await mongoose.connect(process.env.CONECTION_MONGODB, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+}
+connectDatabase();
+
+// loading models
+const Launche = require("./models/launche");
+
 // routers
 const indexRoute = require("./routes/index-route");
+const launcheRoute = require("./routes/launche-route");
 
 // data conversion middleware
 app.use(express.json({ limit: "5mb" }));
@@ -23,5 +37,6 @@ app.use(function (req, res, next) {
 
 // application routes
 app.use("/", indexRoute);
+app.use("/launches", launcheRoute);
 
 module.exports = app;
