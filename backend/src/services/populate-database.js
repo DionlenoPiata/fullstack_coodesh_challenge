@@ -4,11 +4,10 @@ const axios = require("axios");
 const launcheDao = require("../dao/launche-dao");
 
 exports.start = async () => {
-  console.log(`${new Date()} - Populate database...`);
-
   const launches = await launcheDao.get();
 
-  if (launches && launches.length === 0) {
+  if (launches && launches.totalDocs === 0) {
+    console.log(`${new Date()} - Populate database...`);
     let config = {
       method: "get",
       maxBodyLength: Infinity,

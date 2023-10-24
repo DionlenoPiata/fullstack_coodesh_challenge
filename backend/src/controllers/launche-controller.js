@@ -4,8 +4,17 @@ const dao = require("../dao/launche-dao");
 
 exports.get = async (req, res, next) => {
   try {
-    let data = await dao.get();
-    res.status(200).send(data);
+    let { search, page = 1, limit } = req.query;
+
+    let { result, totalDocs, totalPages } = await dao.get(search, page, limit);
+    res.status(200).send({
+      result,
+      totalDocs,
+      page,
+      totalPages,
+      hasNext: page < totalPages,
+      hasPrev: page > 1,
+    });
   } catch (e) {
     console.log(`${new Date()} - (error) ${e}`);
     res.status(500).send({
