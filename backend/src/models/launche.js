@@ -13,12 +13,10 @@ const schema = new Schema(
       patch: {
         small: {
           type: String,
-          required: true,
         },
       },
       webcast: {
         type: String,
-        required: true,
       },
     },
     name: {
@@ -33,17 +31,12 @@ const schema = new Schema(
       type: String,
       required: true,
     },
-    rocket_name: {
-      type: String,
-      required: true,
-    },
     success: {
       type: Boolean,
-      required: true,
     },
     cores: [
       {
-        reused: { type: Boolean, required: true },
+        reused: { type: Boolean },
       },
     ],
   },

@@ -11,6 +11,7 @@
   "author": "DionlenoPiata",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.5.1",
     "debug": "^4.3.4",
     "dotenv": "^16.3.1",
     "dotenv-expand": "^10.0.0",

@@ -10,6 +10,9 @@ dotenvExpand.expand(dotenv);
 
 const app = require("../src/app");
 
+// populate database
+const populateDatabase = require("../src/services/populate-database");
+
 const port = normalizePort(process.env.PORT);
 app.set("port", port);
 
@@ -19,6 +22,8 @@ server.listen(port);
 server.on(`${new Date()} - error`, onError);
 server.on(`${new Date()} - listening`, onListening);
 console.log(`${new Date()} - Server run in port: ` + port);
+
+populateDatabase.start();
 
 function normalizePort(val) {
   const port = parseInt(val, 10);
