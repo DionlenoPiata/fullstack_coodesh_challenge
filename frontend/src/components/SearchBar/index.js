@@ -1,16 +1,41 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useCallback } from "react";
+import debounce from "lodash.debounce";
 import Grid from "@mui/material/Unstable_Grid2";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
+import axios from "axios";
+import LaunchesContext from "../../contexts/LaunchesContext";
 
 function SearchBar() {
+  const [launches, setLaunches] = useContext(LaunchesContext);
   const [search, setSearch] = useState("");
 
-  const handleSearch = async () => {
-    console.log(`Buscar por ${search}`);
+  const debouncedSearch = useCallback(
+    debounce((nextValue) => fetchLaunches(nextValue), 1000),
+    []
+  );
+
+  const fetchLaunches = async () => {
+    try {
+      console.log(`Buscar por ${search}`);
+      const response = await axios.request({
+        method: "GET",
+        url: `${process.env.REACT_APP_BASE_URL_API}/launches?search=${search}`,
+      });
+      console.log("launches:", response.data);
+      setLaunches(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSearchChange = async (event) => {
+    const { value: nextValue } = event.target;
+    setSearch(nextValue);
+    debouncedSearch(nextValue);
   };
 
   return (
@@ -30,15 +55,13 @@ function SearchBar() {
               variant="standard"
               fullWidth
               value={search}
-              onChange={(event) => {
-                setSearch(event.target.value);
-              }}
+              onChange={handleSearchChange}
             />
           </Box>
         </Grid>
         <Grid sx={{ display: { sm: "block", xs: "none" } }}>
           <Typography variant="h6" gutterBottom>
-            <Button variant="contained" color="inherit" onClick={handleSearch}>
+            <Button variant="contained" color="inherit">
               Buscar
             </Button>
           </Typography>
