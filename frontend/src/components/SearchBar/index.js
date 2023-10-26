@@ -18,12 +18,12 @@ function SearchBar() {
     []
   );
 
-  const fetchLaunches = async () => {
+  const fetchLaunches = async (nextValue) => {
     try {
       console.log(`Buscar por ${search}`);
       const response = await axios.request({
         method: "GET",
-        url: `${process.env.REACT_APP_BASE_URL_API}/launches?search=${search}`,
+        url: `${process.env.REACT_APP_BASE_URL_API}/launches?search=${nextValue}`,
       });
       console.log("launches:", response.data);
       setLaunches(response.data);

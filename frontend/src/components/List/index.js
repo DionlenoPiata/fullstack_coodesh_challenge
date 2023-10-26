@@ -70,7 +70,7 @@ function List() {
                   <Grid xs={2}>
                     {new Date(launche.date_utc).toLocaleDateString("en-GB")}
                   </Grid>
-                  <Grid xs={2}>Falta pegar o nome do Foguete</Grid>
+                  <Grid xs={2}>{launche.rocket.name}</Grid>
                   <Grid xs={2}>
                     {launche.success ? (
                       <Chip label={"SUCESSO"} color="success" size="small" />
