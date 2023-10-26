@@ -8,10 +8,11 @@ import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import axios from "axios";
 import LaunchesContext from "../../contexts/LaunchesContext";
+import SearchContext from "../../contexts/SearchContext";
 
 function SearchBar() {
   const [launches, setLaunches] = useContext(LaunchesContext);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useContext(SearchContext);
 
   const debouncedSearch = useCallback(
     debounce((nextValue) => fetchLaunches(nextValue), 1000),
@@ -20,7 +21,6 @@ function SearchBar() {
 
   const fetchLaunches = async (nextValue) => {
     try {
-      console.log(`Buscar por ${search}`);
       const response = await axios.request({
         method: "GET",
         url: `${process.env.REACT_APP_BASE_URL_API}/launches?search=${nextValue}`,
@@ -34,7 +34,7 @@ function SearchBar() {
 
   const handleSearchChange = async (event) => {
     const { value: nextValue } = event.target;
-    setSearch(nextValue);
+    setSearch({ value: nextValue });
     debouncedSearch(nextValue);
   };
 
@@ -54,7 +54,7 @@ function SearchBar() {
               label="Procure aqui"
               variant="standard"
               fullWidth
-              value={search}
+              value={search.value}
               onChange={handleSearchChange}
             />
           </Box>

@@ -1,12 +1,15 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Unstable_Grid2";
 import Chip from "@mui/material/Chip";
+import Pagination from "@mui/material/Pagination";
 import { IconButton } from "@mui/material";
 import { YouTube as YouTubeIcon } from "@mui/icons-material";
+import axios from "axios";
 import LaunchesContext from "../../contexts/LaunchesContext";
+import SearchContext from "../../contexts/SearchContext";
 
 const TableHead = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#4F4F4F" : "#fff",
@@ -35,12 +38,31 @@ const TablePagination = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#4F4F4F" : "#fff",
   ...theme.typography.body2,
   padding: theme.spacing(1),
-  textAlign: "center",
   color: theme.palette.text.secondary,
+  display: "flex",
+  alignContent: "center",
+  justifyContent: "flex-end",
+  alignItems: "center",
 }));
 
 function List() {
   const [launches, setLaunches] = useContext(LaunchesContext);
+  const [search, setSearch] = useContext(SearchContext);
+  const [page, setPage] = useState(1);
+
+  const handleChangePage = async (event, value) => {
+    setPage(value);
+    try {
+      const response = await axios.request({
+        method: "GET",
+        url: `${process.env.REACT_APP_BASE_URL_API}/launches?page=${value}&search=${search.value}`,
+      });
+      setLaunches(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Box sx={{ flexGrow: 1, padding: 1, backgroundColor: "#4F4F4F" }}>
       <Grid container spacing={1}>
@@ -112,7 +134,15 @@ function List() {
           ))}
 
         <Grid xs={12}>
-          <TablePagination>TablePagination</TablePagination>
+          <TablePagination>
+            <Pagination
+              count={launches.totalPages}
+              variant="outlined"
+              shape="rounded"
+              page={page}
+              onChange={handleChangePage}
+            />
+          </TablePagination>
         </Grid>
       </Grid>
     </Box>

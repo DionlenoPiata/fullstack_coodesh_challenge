@@ -15,7 +15,7 @@ exports.get = async (search, page = 1, limit = process.env.LIMIT) => {
       .skip(parseInt((page - 1) * limit))
       .limit(parseInt(limit))
       .populate("rocket")
-      .sort({ created_at: -1 }),
+      .sort({ flight_number: -1 }),
     Document.countDocuments(query),
   ];
   let queriesResult = await Promise.all(queries);
