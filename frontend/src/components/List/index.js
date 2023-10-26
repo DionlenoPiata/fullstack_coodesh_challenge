@@ -24,6 +24,13 @@ const TableRow = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
+const TableCell = styled(Grid)(() => ({
+  display: "flex",
+  alignContent: "center",
+  justifyContent: "center",
+  alignItems: "center",
+}));
+
 const TablePagination = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#4F4F4F" : "#fff",
   ...theme.typography.body2,
@@ -56,8 +63,10 @@ function List() {
             <Grid xs={12}>
               <TableRow>
                 <Grid container spacing={0}>
-                  <Grid xs={1}>{launche.flight_number}</Grid>
-                  <Grid xs={1}>
+                  <TableCell xs={4} sm={1} order={{ xs: 4, sm: 1 }}>
+                    {launche.flight_number}
+                  </TableCell>
+                  <TableCell xs={4} sm={1} order={{ xs: 1, sm: 2 }}>
                     {
                       <img
                         alt="logo"
@@ -65,21 +74,28 @@ function List() {
                         src={launche.links.patch.small}
                       />
                     }
-                  </Grid>
-                  <Grid xs={2}>{launche.name}</Grid>
-                  <Grid xs={2}>
+                  </TableCell>
+                  <TableCell xs={4} sm={2} order={{ xs: 2, sm: 3 }}>
+                    {launche.name}
+                  </TableCell>
+                  <TableCell xs={4} sm={2} order={{ xs: 5, sm: 4 }}>
                     {new Date(launche.date_utc).toLocaleDateString("en-GB")}
-                  </Grid>
-                  <Grid xs={2}>{launche.rocket.name}</Grid>
-                  <Grid xs={2}>
+                  </TableCell>
+                  <TableCell
+                    sx={{ display: { sm: "block", xs: "none" } }}
+                    sm={2}
+                    order={{ sm: 5 }}
+                  >
+                    {launche.rocket.name}
+                  </TableCell>
+                  <TableCell xs={4} sm={2} order={{ xs: 6, sm: 6 }}>
                     {launche.success ? (
                       <Chip label={"SUCESSO"} color="success" size="small" />
                     ) : (
                       <Chip label={"FALHA"} color="error" size="small" />
                     )}
-                  </Grid>
-                  <Grid xs={2}>
-                    {" "}
+                  </TableCell>
+                  <TableCell xs={4} sm={2} order={{ xs: 3, sm: 7 }}>
                     <IconButton
                       color="error"
                       component="a"
@@ -89,7 +105,7 @@ function List() {
                     >
                       <YouTubeIcon fontSize="large" />
                     </IconButton>
-                  </Grid>
+                  </TableCell>
                 </Grid>
               </TableRow>
             </Grid>
