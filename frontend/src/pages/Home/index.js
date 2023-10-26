@@ -33,6 +33,7 @@ function Home() {
                 elevation={3}
               >
                 <img
+                  alt="logo Space C"
                   style={{ width: 50, transform: "rotate(45deg)" }}
                   src={RocketIcon}
                 />
@@ -57,7 +58,7 @@ function Home() {
               </Paper>
             </Grid>
             <Grid xs={12}>
-              <Paper sx={{ height: 200, textAlign: "center" }} elevation={3}>
+              <Paper sx={{ textAlign: "center" }} elevation={3}>
                 <List />
               </Paper>
             </Grid>
