@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
+import LinearProgress from "@mui/material/LinearProgress";
 import axios from "axios";
 import LaunchesContext from "../../contexts/LaunchesContext";
 import SearchContext from "../../contexts/SearchContext";
@@ -13,6 +14,7 @@ import SearchContext from "../../contexts/SearchContext";
 function SearchBar() {
   const [launches, setLaunches] = useContext(LaunchesContext);
   const [search, setSearch] = useContext(SearchContext);
+  const [loading, setLoading] = useState(false);
 
   const debouncedSearch = useCallback(
     debounce((nextValue) => fetchLaunches(nextValue), 1000),
@@ -21,18 +23,21 @@ function SearchBar() {
 
   const fetchLaunches = async (nextValue) => {
     try {
+      setLoading(true);
       const response = await axios.request({
         method: "GET",
         url: `${process.env.REACT_APP_BASE_URL_API}/launches?search=${nextValue}`,
       });
-      console.log("launches:", response.data);
       setLaunches(response.data);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
 
   const handleSearchChange = async (event) => {
+    setLoading(true);
     const { value: nextValue } = event.target;
     setSearch({ value: nextValue });
     debouncedSearch(nextValue);
@@ -66,6 +71,11 @@ function SearchBar() {
             </Button>
           </Typography>
         </Grid>
+        {loading && (
+          <Grid xs={12}>
+            <LinearProgress />
+          </Grid>
+        )}
       </Grid>
     </Box>
   );
