@@ -11,6 +11,7 @@ import PieChart from "../../components/PieChart";
 import ColumnChart from "../../components/ColumnChart";
 import SearchBar from "../../components/SearchBar";
 import List from "../../components/List";
+import Footer from "../../components/Footer";
 import RocketIcon from "../../assets/rocket.png";
 
 const darkTheme = createTheme({ palette: { mode: "dark" } });
@@ -61,9 +62,15 @@ function Home() {
                 </Paper>
               </Grid>
               <Grid xs={12}>
-                <Paper sx={{ textAlign: "center" }} elevation={3}>
+                <Paper
+                  sx={{ textAlign: "center", marginBottom: "10%" }}
+                  elevation={3}
+                >
                   <List />
                 </Paper>
+              </Grid>
+              <Grid xs={12}>
+                <Footer />
               </Grid>
             </Grid>
           </Box>
