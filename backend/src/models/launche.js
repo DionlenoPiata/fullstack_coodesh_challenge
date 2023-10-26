@@ -28,8 +28,8 @@ const schema = new Schema(
       require: true,
     },
     rocket: {
-      type: String,
-      required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Rocket",
     },
     success: {
       type: Boolean,

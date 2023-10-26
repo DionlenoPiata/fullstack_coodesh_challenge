@@ -1,7 +1,7 @@
 "use strict";
 
 const mongoose = require("mongoose");
-const Document = mongoose.model("Launche");
+const Document = mongoose.model("Rocket");
 
 exports.get = async (search, page = 1, limit = process.env.LIMIT) => {
   let query = {};
@@ -14,7 +14,6 @@ exports.get = async (search, page = 1, limit = process.env.LIMIT) => {
     Document.find(query)
       .skip(parseInt((page - 1) * limit))
       .limit(parseInt(limit))
-      .populate("rocket")
       .sort({ created_at: -1 }),
     Document.countDocuments(query),
   ];

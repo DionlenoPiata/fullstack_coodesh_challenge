@@ -16,6 +16,7 @@ connectDatabase();
 
 // loading models
 const Launche = require("./models/launche");
+const Rocket = require("./models/rocket");
 
 // routers
 const indexRoute = require("./routes/index-route");
