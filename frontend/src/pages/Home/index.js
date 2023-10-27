@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import LaunchesContext from "../../contexts/LaunchesContext";
 import SearchContext from "../../contexts/SearchContext";
 import PieChart from "../../components/PieChart";
-import ColumnChart from "../../components/ColumnChart";
+import StackedBarChart from "../../components/StackedBarChart";
 import SearchBar from "../../components/SearchBar";
 import List from "../../components/List";
 import Footer from "../../components/Footer";
@@ -47,13 +47,13 @@ function Home() {
                 </Paper>
               </Grid>
               <Grid xs={12} sm={6}>
-                <Paper sx={{ height: 120, textAlign: "center" }} elevation={3}>
+                <Paper sx={{ textAlign: "center" }} elevation={3}>
                   <PieChart />
                 </Paper>
               </Grid>
               <Grid xs={12} sm={6}>
-                <Paper sx={{ height: 120, textAlign: "center" }} elevation={3}>
-                  <ColumnChart />
+                <Paper sx={{ height: 200, textAlign: "center" }} elevation={3}>
+                  <StackedBarChart />
                 </Paper>
               </Grid>
               <Grid xs={12}>
