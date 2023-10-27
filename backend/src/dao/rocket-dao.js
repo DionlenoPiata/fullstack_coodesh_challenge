@@ -27,6 +27,11 @@ exports.get = async (search, page = 1, limit = process.env.LIMIT) => {
   return res;
 };
 
+exports.getAll = async () => {
+  let res = await Document.find();
+  return res;
+};
+
 exports.create = async (data) => {
   var document = new Document(data);
   const res = await document.save();

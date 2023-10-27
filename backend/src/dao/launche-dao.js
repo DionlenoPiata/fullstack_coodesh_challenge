@@ -28,6 +28,11 @@ exports.get = async (search, page = 1, limit = process.env.LIMIT) => {
   return res;
 };
 
+exports.countAllByIdQuery = async (query) => {
+  let res = await Document.countDocuments(query);
+  return res;
+};
+
 exports.create = async (data) => {
   var document = new Document(data);
   const res = await document.save();

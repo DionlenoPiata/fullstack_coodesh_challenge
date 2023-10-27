@@ -1,26 +1,13 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Chip from "@mui/material/Chip";
 import LabelIcon from "@mui/icons-material/Label";
-import {
-  PieChart as Chart,
-  Pie,
-  Sector,
-  Cell,
-  ResponsiveContainer,
-} from "recharts";
-
-const data = [
-  { name: "Group A", value: 400 },
-  { name: "Group B", value: 300 },
-  { name: "Group C", value: 300 },
-  { name: "Group D", value: 200 },
-];
-
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+import { PieChart as Chart, Pie, Cell } from "recharts";
+import LinearProgress from "@mui/material/LinearProgress";
+import axios from "axios";
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({
@@ -30,7 +17,6 @@ const renderCustomizedLabel = ({
   innerRadius,
   outerRadius,
   percent,
-  index,
 }) => {
   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
@@ -50,6 +36,30 @@ const renderCustomizedLabel = ({
 };
 
 function PieChart() {
+  const [data, setData] = useState({});
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.request({
+        method: "GET",
+        url: `${process.env.REACT_APP_BASE_URL_API}/launches/stats/chart/pie`,
+      });
+      setTimeout(() => {
+        setData(response.data);
+        setLoading(false);
+      }, 1000);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={1}>
@@ -60,57 +70,22 @@ function PieChart() {
         </Grid>
         <Grid xs={4}>
           <Stack spacing={1}>
-            <Typography variant="body2" color="textSecondary">
-              <Box
-                sx={{
-                  display: "flex",
-                  textAlign: "left",
-                  alignContent: "center",
-                  ml: 1,
-                }}
-              >
-                <LabelIcon fontSize="small" color="success" />
-                Used Falcon 9
-              </Box>
-            </Typography>
-            <Typography variant="body2" color="textSecondary">
-              <Box
-                sx={{
-                  display: "flex",
-                  textAlign: "left",
-                  alignContent: "center",
-                  ml: 1,
-                }}
-              >
-                <LabelIcon fontSize="small" color="error" />
-                New Falcon 9
-              </Box>
-            </Typography>
-            <Typography variant="body2" color="textSecondary">
-              <Box
-                sx={{
-                  display: "flex",
-                  textAlign: "left",
-                  alignContent: "center",
-                  ml: 1,
-                }}
-              >
-                <LabelIcon fontSize="small" color="primary" /> Falcon 1
-              </Box>
-            </Typography>
-            <Typography variant="body2" color="textSecondary">
-              <Box
-                sx={{
-                  display: "flex",
-                  textAlign: "left",
-                  alignContent: "center",
-                  ml: 1,
-                }}
-              >
-                <LabelIcon fontSize="small" color="secondary" />
-                Falcon Heavy
-              </Box>
-            </Typography>
+            {data.rockets &&
+              data.rockets.map((rocket) => (
+                <Typography variant="body2" color="textSecondary">
+                  <Box
+                    sx={{
+                      display: "flex",
+                      textAlign: "left",
+                      alignContent: "center",
+                      ml: 1,
+                    }}
+                  >
+                    <LabelIcon fontSize="small" htmlColor={rocket.color} />
+                    {rocket.name}
+                  </Box>
+                </Typography>
+              ))}
           </Stack>
           <Stack sx={{ marginTop: "20px" }} spacing={1}>
             <Typography variant="subtitle2" color="textSecondary">
@@ -134,8 +109,11 @@ function PieChart() {
                   ml: 1,
                 }}
               >
+                Sucesso:&nbsp;
                 <Chip
-                  label="Sucesso: 70"
+                  label={`${
+                    data.successful_launches ? data.successful_launches : "..."
+                  }`}
                   color="success"
                   size={"small"}
                   variant="outlined"
@@ -144,8 +122,11 @@ function PieChart() {
             </Typography>
             <Typography variant="body2" color="textSecondary">
               <Box sx={{ textAlign: "left", ml: 1 }}>
+                Falha:&nbsp;
                 <Chip
-                  label="Falha: 30"
+                  label={` ${
+                    data.failed_launches ? data.failed_launches : "..."
+                  } `}
                   color="error"
                   size={"small"}
                   variant="outlined"
@@ -157,24 +138,27 @@ function PieChart() {
         <Grid xs={8}>
           <Chart width={200} height={200}>
             <Pie
-              data={data}
+              data={data.rockets}
               cx="50%"
               cy="50%"
               labelLine={false}
               label={renderCustomizedLabel}
               outerRadius={80}
               fill="#8884d8"
-              dataKey="value"
+              dataKey="count_launches"
             >
-              {data.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
+              {data.rockets &&
+                data.rockets.map((rocket, index) => (
+                  <Cell key={`cell-${index}`} fill={rocket.color} />
+                ))}
             </Pie>
           </Chart>
         </Grid>
+        {loading && (
+          <Grid xs={12}>
+            <LinearProgress />
+          </Grid>
+        )}
       </Grid>
     </Box>
   );
