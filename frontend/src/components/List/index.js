@@ -1,10 +1,11 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Unstable_Grid2";
 import Chip from "@mui/material/Chip";
 import Pagination from "@mui/material/Pagination";
+import LinearProgress from "@mui/material/LinearProgress";
 import { IconButton } from "@mui/material";
 import { YouTube as YouTubeIcon } from "@mui/icons-material";
 import axios from "axios";
@@ -49,18 +50,35 @@ function List() {
   const [launches, setLaunches] = useContext(LaunchesContext);
   const [search, setSearch] = useContext(SearchContext);
   const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    fetchLaunches();
+  }, []);
+
+  const fetchLaunches = async (page, search) => {
+    try {
+      setLoading(true);
+      const response = await axios.request({
+        method: "GET",
+        url: `${process.env.REACT_APP_BASE_URL_API}/launches${
+          page ? `?page=${page}` : ""
+        }${search ? `&search=${search}` : ""}`,
+      });
+      setTimeout(() => {
+        setLaunches(response.data);
+        setLoading(false);
+      }, 500);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
 
   const handleChangePage = async (event, value) => {
     setPage(value);
-    try {
-      const response = await axios.request({
-        method: "GET",
-        url: `${process.env.REACT_APP_BASE_URL_API}/launches?page=${value}&search=${search.value}`,
-      });
-      setLaunches(response.data);
-    } catch (error) {
-      console.log(error);
-    }
+    setLoading(true);
+    fetchLaunches(value, search.value);
   };
 
   return (
@@ -134,6 +152,11 @@ function List() {
           ))}
 
         <Grid xs={12}>
+          {loading && (
+            <Grid xs={12}>
+              <LinearProgress />
+            </Grid>
+          )}
           <TablePagination>
             <Pagination
               count={launches.totalPages}
