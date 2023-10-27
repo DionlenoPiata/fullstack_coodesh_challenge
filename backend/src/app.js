@@ -7,10 +7,15 @@ const app = express();
 
 // conect database
 async function connectDatabase() {
-  await mongoose.connect(process.env.CONECTION_MONGODB, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  try {
+    await mongoose.connect(process.env.CONECTION_MONGODB, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log(`${new Date()} - Conected database!`);
+  } catch (error) {
+    console.log(`${new Date()} - (error) ${e}`);
+  }
 }
 connectDatabase();
 
