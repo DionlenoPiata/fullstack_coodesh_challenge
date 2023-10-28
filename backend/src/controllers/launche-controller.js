@@ -68,7 +68,7 @@ exports.getStatsForPieChart = async (req, res, next) => {
         failed_launches: failedLaunches,
       };
 
-      res.send(result);
+      res.status(200).send(result);
     })
     .catch((error) => {
       res.status(404).send({});
@@ -76,5 +76,30 @@ exports.getStatsForPieChart = async (req, res, next) => {
 };
 
 exports.getStatsForBarChart = async (req, res, next) => {
-  res.send({});
+  let rockets = await rocketDao.getAll();
+
+  let result = {
+    rockets: rockets.map((rocker, index) => ({
+      name: rocker.name,
+      color: COLORS[index],
+    })),
+    data_per_year: [
+      {
+        name: "2015",
+        "Foguete A": 1000,
+        "Foguete B": 2000,
+        "Foguete C": 3000,
+        "Foguete D": 4000,
+      },
+      {
+        name: "2016",
+        "Foguete A": 1000,
+        "Foguete B": 2000,
+        "Foguete C": 3000,
+        "Foguete D": 4000,
+      },
+    ],
+  };
+
+  res.send(result);
 };
