@@ -28,8 +28,8 @@ const renderActiveShape = (props) => {
   const cos = Math.cos(-RADIAN * midAngle);
   const sx = cx + (outerRadius + 10) * cos;
   const sy = cy + (outerRadius + 10) * sin;
-  const mx = cx + (outerRadius + 30) * cos;
-  const my = cy + (outerRadius + 30) * sin;
+  const mx = cx + (outerRadius + 15) * cos;
+  const my = cy + (outerRadius + 15) * sin;
   const ex = mx + (cos >= 0 ? 1 : -1) * 22;
   const ey = my;
   const textAnchor = cos >= 0 ? "start" : "end";
@@ -66,13 +66,15 @@ const renderActiveShape = (props) => {
       <text
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}
+        dx={cos >= 0 ? -18 : 18}
         textAnchor={textAnchor}
-        fill="#333"
-      >{`PV ${value}`}</text>
+        fill="#666"
+      >{`Vôos ${value}`}</text>
       <text
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}
         dy={18}
+        dx={cos >= 0 ? -18 : 18}
         textAnchor={textAnchor}
         fill="#999"
       >
@@ -121,7 +123,7 @@ function PieChart() {
             width={"100%"}
             sx={{ display: "flex", justifyContent: "center" }}
           >
-            <Chart width={400} height={200}>
+            <Chart width={350} height={200}>
               <Pie
                 activeIndex={activeIndex}
                 activeShape={renderActiveShape}
@@ -165,7 +167,7 @@ function PieChart() {
           </Stack>
         </Grid>
         <Grid xs={6}>
-          <Stack sx={{ marginTop: "20px" }} spacing={1}>
+          <Stack spacing={1}>
             <Typography variant="subtitle2" color="textSecondary">
               <Box
                 sx={{

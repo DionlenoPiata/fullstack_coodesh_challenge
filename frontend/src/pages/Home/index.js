@@ -47,12 +47,12 @@ function Home() {
                 </Paper>
               </Grid>
               <Grid xs={12} sm={6}>
-                <Paper sx={{ textAlign: "center" }} elevation={3}>
+                <Paper sx={{ textAlign: "center", height: 360 }} elevation={3}>
                   <PieChart />
                 </Paper>
               </Grid>
               <Grid xs={12} sm={6}>
-                <Paper sx={{ textAlign: "center" }} elevation={3}>
+                <Paper sx={{ textAlign: "center", height: 360 }} elevation={3}>
                   <StackedBarChart />
                 </Paper>
               </Grid>

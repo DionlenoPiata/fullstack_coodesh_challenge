@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import {
   BarChart,
   Bar,
@@ -58,37 +59,53 @@ function StackedBarChart() {
   };
 
   return (
-    <Grid xs={12}>
-      <Box width={"100%"} sx={{ display: "flex", justifyContent: "center" }}>
-        <BarChart
-          width={300}
-          height={300}
-          data={data.data_per_year}
-          margin={{
-            top: 20,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" interval={0} tick={<CustomizedAxisTick />} />
-          <YAxis tickCount={10} />
-          <Tooltip />
-          <Legend />
+    <Box sx={{ flexGrow: 1 }}>
+      <Grid container spacing={1}>
+        <Grid xs={12}>
+          <Typography variant="body2" gutterBottom>
+            Lançamentos por ano
+          </Typography>
+        </Grid>
+        <Grid xs={12}>
+          <Box
+            width={"100%"}
+            sx={{ display: "flex", justifyContent: "center" }}
+          >
+            <BarChart
+              width={300}
+              height={300}
+              data={data.data_per_year}
+              margin={{
+                top: 20,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis
+                dataKey="name"
+                interval={0}
+                tick={<CustomizedAxisTick />}
+              />
+              <YAxis tickCount={10} />
+              <Tooltip />
+              <Legend />
 
-          {data.rockets &&
-            data.rockets.map((rocket, index) => (
-              <Bar dataKey={rocket.name} stackId="a" fill={rocket.color} />
-            ))}
-        </BarChart>
-      </Box>
+              {data.rockets &&
+                data.rockets.map((rocket, index) => (
+                  <Bar dataKey={rocket.name} stackId="a" fill={rocket.color} />
+                ))}
+            </BarChart>
+          </Box>
+        </Grid>
+      </Grid>
       {loading && (
         <Grid xs={12}>
           <LinearProgress />
         </Grid>
       )}
-    </Grid>
+    </Box>
   );
 }
 
