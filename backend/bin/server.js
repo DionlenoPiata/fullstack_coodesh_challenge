@@ -10,6 +10,9 @@ dotenvExpand.expand(dotenv);
 
 const app = require("../src/app");
 
+// cron job
+const cronUpdateDatabase = require("../src/services/cron-update-database");
+
 // populate database
 const populateDatabase = require("../src/services/populate-database");
 

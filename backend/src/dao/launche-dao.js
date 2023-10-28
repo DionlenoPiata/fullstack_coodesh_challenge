@@ -28,6 +28,11 @@ exports.get = async (search, page = 1, limit = process.env.LIMIT) => {
   return res;
 };
 
+exports.getById = async (id) => {
+  let res = await Document.findById(id);
+  return res;
+};
+
 exports.countAllByIdQuery = async (query) => {
   let res = await Document.countDocuments(query);
   return res;
