@@ -2,6 +2,7 @@
 
 const express = require("express");
 const mongoose = require("mongoose");
+const swaggerUi = require("swagger-ui-express");
 
 const app = express();
 
@@ -41,8 +42,13 @@ app.use(function (req, res, next) {
   next();
 });
 
+// documentation settings
+const swaggerFile = require("./docs/swagger_output.json");
+
 // application routes
 app.use("/", indexRoute);
-app.use("/launches", launcheRoute);
+app.use("/", launcheRoute);
+
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 module.exports = app;

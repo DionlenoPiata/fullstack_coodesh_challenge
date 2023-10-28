@@ -14,6 +14,8 @@ const COLORS = [
 ];
 
 exports.get = async (req, res, next) => {
+  // #swagger.tags = ['Launche']
+  // #swagger.description = 'Endpoint para obter os lançamentos de foguetes'
   try {
     let { search, page = 1, limit } = req.query;
 
@@ -22,6 +24,18 @@ exports.get = async (req, res, next) => {
       page,
       limit
     );
+    /*  #swagger.responses[200] = {
+                description: "Retorna todos os lançamentos de foguetes com busca e paginação.",
+                content: {
+                    "application/json": {
+                        schema:{
+                            $ref: "#/components/schemas/launcheResponse"
+                        }
+                    }           
+                }
+            }   
+        */
+
     res.status(200).send({
       result,
       totalDocs,
@@ -40,6 +54,8 @@ exports.get = async (req, res, next) => {
 };
 
 exports.getStatsForPieChart = async (req, res, next) => {
+  // #swagger.tags = ['Launche']
+  // #swagger.description = 'Endpoint para obter dados para gráfico de pizza.'
   let rockets = await rocketDao.getAll();
 
   Promise.all(
@@ -67,7 +83,17 @@ exports.getStatsForPieChart = async (req, res, next) => {
         successful_launches: successfulLaunches,
         failed_launches: failedLaunches,
       };
-
+      /*  #swagger.responses[200] = {
+                description: "Retorna os dados para o gráfico de pizza.",
+                content: {
+                    "application/json": {
+                        schema:{
+                            $ref: "#/components/schemas/statsChartPieResponse"
+                        }
+                    }           
+                }
+            }   
+        */
       res.status(200).send(result);
     })
     .catch(() => {
@@ -79,6 +105,8 @@ exports.getStatsForPieChart = async (req, res, next) => {
 };
 
 exports.getStatsForBarChart = async (req, res, next) => {
+  // #swagger.tags = ['Launche']
+  // #swagger.description = 'Endpoint para obter dados para gráfico de barras.'
   try {
     let rockets = await rocketDao.getAll();
     let launchesGroupedByYear = await launcheDao.getAllGroupedByYear();
@@ -102,7 +130,17 @@ exports.getStatsForBarChart = async (req, res, next) => {
         };
       }),
     };
-
+    /*  #swagger.responses[200] = {
+                description: "Retorna os dados para o gráfico de barra.",
+                content: {
+                    "application/json": {
+                        schema:{
+                            $ref: "#/components/schemas/statsChartBarResponse"
+                        }
+                    }           
+                }
+            }   
+        */
     res.status(200).send(result);
   } catch (error) {
     console.log(`${new Date()} - (error) ${error}`);

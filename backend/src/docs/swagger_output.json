@@ -1,0 +1,303 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Fullstack Challenge 🏅 - Space X API",
+    "description": "A SpaceX Data API é um serviço que fornece acesso a dados da SpaceX. Os seus recursos incluem listar todos os dados da base com suporte a paginação e busca e também dados para a criação de gráficos de pizza e barra. Os dados disponíveis incluem informações sobre lançamentos de foguetes, missões e naves espaciais."
+  },
+  "servers": [
+    {
+      "url": "localhost:3003"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "description": "Rota inicial da aplicação.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/indexResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/launches": {
+      "get": {
+        "tags": [
+          "Launche"
+        ],
+        "description": "Endpoint para obter os lançamentos de foguetes",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna todos os lançamentos de foguetes com busca e paginação.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/launcheResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/launches/stats/chart/pie": {
+      "get": {
+        "tags": [
+          "Launche"
+        ],
+        "description": "Endpoint para obter dados para gráfico de pizza.",
+        "responses": {
+          "200": {
+            "description": "Retorna os dados para o gráfico de pizza.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/statsChartPieResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/launches/stats/chart/bar": {
+      "get": {
+        "tags": [
+          "Launche"
+        ],
+        "description": "Endpoint para obter dados para gráfico de barras.",
+        "responses": {
+          "200": {
+            "description": "Retorna os dados para o gráfico de barra.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/statsChartBarResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "indexResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Fullstack Challenge 🏅 - Space X API"
+          }
+        }
+      },
+      "launcheResponse": {
+        "type": "object",
+        "properties": {
+          "links": {
+            "type": "object",
+            "properties": {
+              "patch": {
+                "type": "object",
+                "properties": {
+                  "small": {
+                    "type": "string",
+                    "example": "https://images2.imgbox.com/a2/a0/cHJWyFCo_o.png"
+                  }
+                }
+              },
+              "webcast": {
+                "type": "string",
+                "example": "https://youtu.be/4xJAGFR_N-c"
+              }
+            }
+          },
+          "_id": {
+            "type": "string",
+            "example": "5eb87d4effd86e000604b391"
+          },
+          "flight_number": {
+            "type": "number",
+            "example": 110
+          },
+          "name": {
+            "type": "string",
+            "example": "CRS-21"
+          },
+          "date_utc": {
+            "type": "string",
+            "example": "2020-12-06T16:17:00.000Z"
+          },
+          "rocket": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "example": "5e9d0d95eda69973a809d1ec"
+              },
+              "name": {
+                "type": "string",
+                "example": "Falcon 9"
+              },
+              "created_at": {
+                "type": "string",
+                "example": "2023-10-26T16:43:19.803Z"
+              },
+              "updated_at": {
+                "type": "string",
+                "example": "2023-10-26T16:43:19.803Z"
+              },
+              "__v": {
+                "type": "number",
+                "example": 0
+              }
+            }
+          },
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "cores": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "reused": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "_id": {
+                  "type": "string",
+                  "example": "653abed756bab37cbbd6d318"
+                }
+              }
+            }
+          },
+          "created_at": {
+            "type": "string",
+            "example": "2023-10-26T19:32:39.777Z"
+          },
+          "updated_at": {
+            "type": "string",
+            "example": "2023-10-26T19:32:39.777Z"
+          },
+          "__v": {
+            "type": "number",
+            "example": 0
+          }
+        }
+      },
+      "statsChartPieResponse": {
+        "type": "object",
+        "properties": {
+          "rockets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Falcon 1"
+                },
+                "color": {
+                  "type": "string",
+                  "example": "#0088FE"
+                },
+                "count_launches": {
+                  "type": "number",
+                  "example": 5
+                }
+              }
+            }
+          },
+          "successful_launches": {
+            "type": "number",
+            "example": 181
+          },
+          "failed_launches": {
+            "type": "number",
+            "example": 5
+          }
+        }
+      },
+      "statsChartBarResponse": {
+        "type": "object",
+        "properties": {
+          "rockets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Falcon 1"
+                },
+                "color": {
+                  "type": "string",
+                  "example": "#0088FE"
+                }
+              }
+            }
+          },
+          "data_per_year": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "2006"
+                },
+                "Falcon 1": {
+                  "type": "number",
+                  "example": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

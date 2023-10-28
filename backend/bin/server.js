@@ -10,6 +10,9 @@ dotenvExpand.expand(dotenv);
 
 const app = require("../src/app");
 
+// generated docs
+const docs = require("../src/docs/swagger");
+
 // cron job
 const cronUpdateDatabase = require("../src/services/cron-update-database");
 

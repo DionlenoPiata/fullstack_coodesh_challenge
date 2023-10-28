@@ -5,8 +5,8 @@ const axios = require("axios");
 const launcheDao = require("../dao/launche-dao");
 
 const job = new CronJob(
-  "*/5 * * * *", // minute by minute
-  //"0 9 * * *", // hour by hour
+  //"*/5 * * * *", // five in five minutes
+  "0 9 * * *", // at 9 o'clock
   update,
   null,
   true,
