@@ -30,11 +30,11 @@ exports.get = async (req, res, next) => {
       hasNext: page < totalPages,
       hasPrev: page > 1,
     });
-  } catch (e) {
-    console.log(`${new Date()} - (error) ${e}`);
-    res.status(500).send({
-      message: "Falha ao processar a requisição!",
-      error: e.message,
+  } catch (error) {
+    console.log(`${new Date()} - (error) ${error}`);
+    res.status(400).send({
+      message:
+        "Não foi possível processar sua solicitação, tente novamente mais tarde!",
     });
   }
 };
@@ -71,33 +71,44 @@ exports.getStatsForPieChart = async (req, res, next) => {
       res.status(200).send(result);
     })
     .catch(() => {
-      res.status(404).send({});
+      res.status(400).send({
+        message:
+          "Não foi possível processar sua solicitação, tente novamente mais tarde!",
+      });
     });
 };
 
 exports.getStatsForBarChart = async (req, res, next) => {
-  let rockets = await rocketDao.getAll();
-  let launchesGroupedByYear = await launcheDao.getAllGroupedByYear();
+  try {
+    let rockets = await rocketDao.getAll();
+    let launchesGroupedByYear = await launcheDao.getAllGroupedByYear();
 
-  let result = {
-    rockets: rockets.map((rocker, index) => ({
-      name: rocker.name,
-      color: COLORS[index],
-    })),
-    data_per_year: launchesGroupedByYear.map((item) => {
-      const year = item._id;
-      const rocketsData = {};
+    let result = {
+      rockets: rockets.map((rocker, index) => ({
+        name: rocker.name,
+        color: COLORS[index],
+      })),
+      data_per_year: launchesGroupedByYear.map((item) => {
+        const year = item._id;
+        const rocketsData = {};
 
-      item.rockets.forEach((rocket) => {
-        rocketsData[rocket.name] = rocket.count;
-      });
+        item.rockets.forEach((rocket) => {
+          rocketsData[rocket.name] = rocket.count;
+        });
 
-      return {
-        name: `${year}`,
-        ...rocketsData,
-      };
-    }),
-  };
+        return {
+          name: `${year}`,
+          ...rocketsData,
+        };
+      }),
+    };
 
-  res.send(result);
+    res.status(200).send(result);
+  } catch (error) {
+    console.log(`${new Date()} - (error) ${error}`);
+    res.status(400).send({
+      message:
+        "Não foi possível processar sua solicitação, tente novamente mais tarde!",
+    });
+  }
 };
