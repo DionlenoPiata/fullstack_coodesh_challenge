@@ -3,7 +3,6 @@ import debounce from "lodash.debounce";
 import Grid from "@mui/material/Unstable_Grid2";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -51,7 +50,7 @@ function SearchBar() {
             Registro de lançamentos
           </Typography>
         </Grid>
-        <Grid xs={12} sm={8}>
+        <Grid xs={12} sm={12}>
           <Box sx={{ display: "flex", alignItems: "flex-end" }}>
             <SearchIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
             <TextField
@@ -64,13 +63,7 @@ function SearchBar() {
             />
           </Box>
         </Grid>
-        <Grid sx={{ display: { sm: "block", xs: "none" } }}>
-          <Typography variant="h6" gutterBottom>
-            <Button variant="contained" color="inherit">
-              Buscar
-            </Button>
-          </Typography>
-        </Grid>
+
         {loading && (
           <Grid xs={12}>
             <LinearProgress />
