@@ -33,6 +33,59 @@ exports.countAllByIdQuery = async (query) => {
   return res;
 };
 
+exports.getAllGroupedByYear = async () => {
+  let res = await Document.aggregate([
+    {
+      $group: {
+        _id: {
+          year: { $year: "$date_utc" },
+          rocket: "$rocket",
+        },
+        count: { $sum: 1 },
+      },
+    },
+    {
+      $lookup: {
+        from: "rockets",
+        localField: "_id.rocket",
+        foreignField: "_id",
+        as: "rocketInfo",
+      },
+    },
+    {
+      $unwind: "$rocketInfo",
+    },
+    {
+      $project: {
+        _id: 0,
+        year: "$_id.year",
+        rocketId: "$_id.rocket",
+        name: "$rocketInfo.name",
+        count: 1,
+      },
+    },
+    {
+      $group: {
+        _id: "$year",
+        rockets: {
+          $push: {
+            id: "$rocketId",
+            name: "$name",
+            count: "$count",
+          },
+        },
+      },
+    },
+    {
+      $sort: {
+        _id: 1,
+      },
+    },
+  ]);
+
+  return res;
+};
+
 exports.create = async (data) => {
   var document = new Document(data);
   const res = await document.save();

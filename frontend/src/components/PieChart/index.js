@@ -5,13 +5,7 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Chip from "@mui/material/Chip";
 import LabelIcon from "@mui/icons-material/Label";
-import {
-  PieChart as Chart,
-  Pie,
-  Sector,
-  Cell,
-  ResponsiveContainer,
-} from "recharts";
+import { PieChart as Chart, Pie, Sector, Cell } from "recharts";
 import LinearProgress from "@mui/material/LinearProgress";
 import axios from "axios";
 

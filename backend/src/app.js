@@ -14,7 +14,7 @@ async function connectDatabase() {
     });
     console.log(`${new Date()} - Conected database!`);
   } catch (error) {
-    console.log(`${new Date()} - (error) ${e}`);
+    console.log(`${new Date()} - (error) ${error}`);
   }
 }
 connectDatabase();

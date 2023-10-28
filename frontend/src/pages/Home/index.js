@@ -37,7 +37,7 @@ function Home() {
                   elevation={3}
                 >
                   <img
-                    alt="logo Space C"
+                    alt="logo SpaceX"
                     style={{ width: 50, transform: "rotate(45deg)" }}
                     src={RocketIcon}
                   />
@@ -52,7 +52,7 @@ function Home() {
                 </Paper>
               </Grid>
               <Grid xs={12} sm={6}>
-                <Paper sx={{ height: 200, textAlign: "center" }} elevation={3}>
+                <Paper sx={{ textAlign: "center" }} elevation={3}>
                   <StackedBarChart />
                 </Paper>
               </Grid>

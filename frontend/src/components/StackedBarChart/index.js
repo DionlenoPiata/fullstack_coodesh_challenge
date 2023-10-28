@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import Grid from "@mui/material/Unstable_Grid2";
+import Box from "@mui/material/Box";
 import {
   BarChart,
   Bar,
@@ -7,86 +9,86 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer,
 } from "recharts";
+import LinearProgress from "@mui/material/LinearProgress";
+import axios from "axios";
 
-const data = [
-  {
-    name: "2015",
-    "Foguete A": 1000,
-    "Foguete B": 2000,
-    "Foguete C": 3000,
-    "Foguete D": 4000,
-  },
-  {
-    name: "2016",
-    "Foguete A": 1000,
-    "Foguete B": 2000,
-    "Foguete C": 3000,
-    "Foguete D": 4000,
-  },
-  {
-    name: "2017",
-    "Foguete A": 1000,
-    "Foguete B": 2000,
-    "Foguete C": 3000,
-    "Foguete D": 4000,
-  },
-  {
-    name: "2018",
-    "Foguete A": 1000,
-    "Foguete B": 2000,
-    "Foguete C": 3000,
-    "Foguete D": 4000,
-  },
-  {
-    name: "2019",
-    "Foguete A": 1000,
-    "Foguete B": 2000,
-    "Foguete C": 3000,
-    "Foguete D": 4000,
-  },
-  {
-    name: "2020",
-    "Foguete A": 1000,
-    "Foguete B": 2000,
-    "Foguete C": 3000,
-    "Foguete D": 4000,
-  },
-  {
-    name: "2021",
-    "Foguete A": 1000,
-    "Foguete B": 2000,
-    "Foguete C": 3000,
-    "Foguete D": 4000,
-  },
-];
+const CustomizedAxisTick = (props) => {
+  const { x, y, payload } = props;
+
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <text
+        x={0}
+        y={0}
+        dy={5}
+        textAnchor="end"
+        fill="#666"
+        transform="rotate(-45)"
+      >
+        {payload.value}
+      </text>
+    </g>
+  );
+};
 
 function StackedBarChart() {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.request({
+        method: "GET",
+        url: `${process.env.REACT_APP_BASE_URL_API}/launches/stats/chart/bar`,
+      });
+      setTimeout(() => {
+        setData(response.data);
+        setLoading(false);
+      }, 1000);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <BarChart
-        width={600}
-        height={300}
-        data={data}
-        margin={{
-          top: 20,
-          right: 30,
-          left: 20,
-          bottom: 5,
-        }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" interval={0} />
-        <YAxis tickCount={10} />
-        <Tooltip />
-        <Legend />
-        <Bar dataKey="Foguete A" stackId="a" fill="#000000" />
-        <Bar dataKey="Foguete B" stackId="a" fill="#6A5ACD" />
-        <Bar dataKey="Foguete C" stackId="a" fill="#008B8B" />
-        <Bar dataKey="Foguete D" stackId="a" fill="#00FF7F" />
-      </BarChart>
-    </ResponsiveContainer>
+    <Grid xs={12}>
+      <Box width={"100%"} sx={{ display: "flex", justifyContent: "center" }}>
+        <BarChart
+          width={300}
+          height={300}
+          data={data.data_per_year}
+          margin={{
+            top: 20,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" interval={0} tick={<CustomizedAxisTick />} />
+          <YAxis tickCount={10} />
+          <Tooltip />
+          <Legend />
+
+          {data.rockets &&
+            data.rockets.map((rocket, index) => (
+              <Bar dataKey={rocket.name} stackId="a" fill={rocket.color} />
+            ))}
+        </BarChart>
+      </Box>
+      {loading && (
+        <Grid xs={12}>
+          <LinearProgress />
+        </Grid>
+      )}
+    </Grid>
   );
 }
 
