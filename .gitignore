@@ -6,4 +6,3 @@ leia.me
 
 # environment variables
 /backend/.env.development
-/backend/.env

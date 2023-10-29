@@ -60,7 +60,7 @@ exports.getStatsForPieChart = async (req, res, next) => {
 
   Promise.all(
     rockets.map(async (rocket, index) => {
-      let countLaunches = await launcheDao.countAllByIdQuery({
+      let countLaunches = await launcheDao.countAllByQuery({
         rocket: rocket._id,
       });
       return {
@@ -71,10 +71,10 @@ exports.getStatsForPieChart = async (req, res, next) => {
     })
   )
     .then(async (dataArray) => {
-      let successfulLaunches = await launcheDao.countAllByIdQuery({
+      let successfulLaunches = await launcheDao.countAllByQuery({
         success: true,
       });
-      let failedLaunches = await launcheDao.countAllByIdQuery({
+      let failedLaunches = await launcheDao.countAllByQuery({
         success: false,
       });
 

@@ -49,7 +49,7 @@ exports.getById = async (id) => {
   return res;
 };
 
-exports.countAllByIdQuery = async (query) => {
+exports.countAllByQuery = async (query) => {
   let res = await Document.countDocuments(query);
   return res;
 };
