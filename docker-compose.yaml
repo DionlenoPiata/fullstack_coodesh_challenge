@@ -30,6 +30,7 @@ services:
   database:
     image: mongo
     container_name: database
+    command: mongod --quiet --logpath /dev/null
     restart: always
     tty: true
     ports:
