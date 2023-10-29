@@ -17,7 +17,8 @@ const docs = require("../src/docs/swagger");
 const cronUpdateDatabase = require("../src/services/cron-update-database");
 
 // populate database
-const populateDatabase = require("../src/services/populate-database");
+const populateLaunches = require("../src/services/populate-launches-database");
+const populateRockets = require("../src/services/populate-rockets-database");
 
 const port = normalizePort(process.env.PORT);
 app.set("port", port);
@@ -29,7 +30,8 @@ server.on(`${new Date()} - error`, onError);
 server.on(`${new Date()} - listening`, onListening);
 console.log(`${new Date()} - Server run in port: ` + port);
 
-populateDatabase.start();
+populateLaunches.start();
+populateRockets.start();
 
 function normalizePort(val) {
   const port = parseInt(val, 10);
