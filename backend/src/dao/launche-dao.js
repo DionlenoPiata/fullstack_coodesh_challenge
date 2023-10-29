@@ -6,8 +6,24 @@ const Document = mongoose.model("Launche");
 exports.get = async (search, page = 1, limit = process.env.LIMIT) => {
   let query = {};
 
+  const containsFailure = /falha/i.test(search);
+  const containsSuccess = /sucesso/i.test(search);
+
   if (search) {
-    query["name"] = { $regex: search, $options: "i" };
+    query = {
+      $or: [{ name: { $regex: search, $options: "i" } }],
+    };
+
+    if (containsFailure) {
+      query = {
+        $or: [{ success: false }],
+      };
+    }
+    if (containsSuccess) {
+      query = {
+        $or: [{ success: true }],
+      };
+    }
   }
 
   let queries = [
