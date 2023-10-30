@@ -34,5 +34,32 @@ async function update() {
     console.log(`${new Date()} - Finishing update launches data!`);
   } catch (e) {
     console.error(`${new Date()} - error:`, e);
+
+    let data = JSON.stringify({
+      message: `Erro ao sicronizar dados às ${new Date()}`,
+    });
+
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: `${process.env.WEBHOOK}`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    async function makeRequest() {
+      try {
+        const response = await axios.request(config);
+        console.log(JSON.stringify(response.data));
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    if (process.env.WEBHOOK) {
+      makeRequest();
+    }
   }
 }
