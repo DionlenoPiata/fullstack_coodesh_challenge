@@ -22,8 +22,7 @@ Back-end:
 
 Pré-requisitos
 
-> docker
-> docker compose
+> docker e docker compose
 
 1. Clone o repositório
    ```sh
@@ -39,15 +38,15 @@ Pré-requisitos
 
 A população do banco de dados acontece de forma automática na primeira execução do projeto.
 
-## Acessando front-end
+## Acessando o front-end
 
 http://localhost:3000
 
-## Acessando back-end
+## Acessando o back-end
 
 http://localhost:3003
 
-## AceAcessandossar documentação
+## Acessando a documentação
 
 http://localhost:3003/docs
 
