@@ -4,6 +4,8 @@
 
 Neste desafio foi desenvolvido sistema web para listar informações da API SpaceX-API.
 
+[Apresentação](https://www.loom.com/share/b88309d142524d75a50d2f8997147e45)
+
 ## Técnologias usadas
 
 Geral:
