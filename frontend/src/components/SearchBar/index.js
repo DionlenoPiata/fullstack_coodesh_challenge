@@ -1,4 +1,5 @@
 import React, { useState, useContext, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import debounce from "lodash.debounce";
 import Grid from "@mui/material/Unstable_Grid2";
 import Box from "@mui/material/Box";
@@ -11,6 +12,7 @@ import LaunchesContext from "../../contexts/LaunchesContext";
 import SearchContext from "../../contexts/SearchContext";
 
 function SearchBar() {
+  let history = useNavigate();
   const [launches, setLaunches] = useContext(LaunchesContext);
   const [search, setSearch] = useContext(SearchContext);
   const [loading, setLoading] = useState(false);
@@ -29,6 +31,7 @@ function SearchBar() {
       });
       setLaunches(response.data);
       setLoading(false);
+      history(`/?search=${nextValue}`);
     } catch (error) {
       setLoading(false);
       console.log(error);

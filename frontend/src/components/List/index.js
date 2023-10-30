@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -47,13 +48,20 @@ const TablePagination = styled(Paper)(({ theme }) => ({
 }));
 
 function List() {
+  let history = useNavigate();
+
   const [launches, setLaunches] = useContext(LaunchesContext);
   const [search, setSearch] = useContext(SearchContext);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
 
+  const [searchParams] = useSearchParams();
+
   useEffect(() => {
-    fetchLaunches();
+    if (searchParams.get("page")) {
+      setPage(parseInt(searchParams.get("page")));
+    }
+    fetchLaunches(searchParams.get("page"), searchParams.get("search"));
   }, []);
 
   const fetchLaunches = async (page, search) => {
@@ -61,13 +69,16 @@ function List() {
       setLoading(true);
       const response = await axios.request({
         method: "GET",
-        url: `${process.env.REACT_APP_BASE_URL_API}/launches${
-          page ? `?page=${page}` : ""
-        }${search ? `&search=${search}` : ""}`,
+        url: `${process.env.REACT_APP_BASE_URL_API}/launches?${
+          page ? `page=${page}&` : ""
+        }${search ? `search=${search}` : ""}`,
       });
       setTimeout(() => {
         setLaunches(response.data);
         setLoading(false);
+        history(
+          `/?${page ? `page=${page}&` : ""}${search ? `search=${search}` : ""}`
+        );
       }, 500);
     } catch (error) {
       setLoading(false);
